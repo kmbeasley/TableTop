@@ -6,7 +6,13 @@
  * @returns {boolean} whether the wizard can cast the spell
  */
 function canCastSpell(isSpellPrepared, hasScroll) {
-  // TODO
+  if (isSpellPrepared) {
+    return true;
+  } else if (hasScroll) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 /**
@@ -17,8 +23,16 @@ function canCastSpell(isSpellPrepared, hasScroll) {
  * @returns {boolean} whether the creature is hidden from the observer
  */
 function isHidden(hiding, aware) {
-  // TODO
+  if (hiding) {
+    return true;
+  } else if (!aware) {
+    return true;
+  } else {
+    return false;
+  }
 }
+// Could also make it as if (hiding || !aware) it would combine both into the same thing
+// above, just condensed down together. || is another way of saying OR.
 
 /**
  * A strike hits if the attack value is greater than or equal
@@ -27,9 +41,16 @@ function isHidden(hiding, aware) {
  * @param {number} ac - the armor class to beat
  * @returns {boolean} whether the strike hits
  */
+
 function doesStrikeHit(attack, ac) {
-  // TODO
+  if (attack >= ac) {
+    return true;
+  } else {
+    return false;
+  }
 }
+//Could also be return attack >= ac; this is also stating that the if the attack is
+//> or = then it is true.
 
 /**
  * A strike is a critical hit if the attack value is at least
@@ -39,7 +60,7 @@ function doesStrikeHit(attack, ac) {
  * @returns {boolean} whether the strike is a critical hit
  */
 function doesStrikeCrit(attack, ac) {
-  // TODO
+  return attack >= 10 + ac;
 }
 
 /**
@@ -51,8 +72,15 @@ function doesStrikeCrit(attack, ac) {
  * @returns {number} total hit points after healing
  */
 function heal(maxHp, currentHp, healAmount) {
-  // TODO
+  if (currentHp + healAmount > maxHp) {
+    return maxHp;
+  } else {
+    return currentHp + healAmount;
+  }
 }
+//OR if you gave it a const hp= currentHp + healAmount, then you condense it down
+//to where you are just using the variable rather than doing the operation multiple times.
+// so it could be return hp > maxHp ? maxHp : hp;
 
 /**
  * When a character uses a skill they have proficiency in,
@@ -71,7 +99,23 @@ function heal(maxHp, currentHp, healAmount) {
  * @returns {number} the character's proficiency bonus
  */
 function getProficiencyBonus(level, rank) {
-  // TODO
+  if (rank === "untrained") {
+    return 0;
+  }
+
+  let bonus = 0;
+
+  if (rank === "trained") {
+    bonus = 2;
+  } else if (rank === "expert") {
+    bonus = 4;
+  } else if (rank === "master") {
+    bonus = 6;
+  } else if (rank === "legendary") {
+    bonus = 8;
+  }
+
+  return level + bonus;
 }
 
 /**
@@ -85,7 +129,13 @@ function getProficiencyBonus(level, rank) {
  * @returns {number} the cover bonus to AC
  */
 function getCoverBonus(behindObstacle, takingCover) {
-  // TODO
+  if (!behindObstacle) {
+    return 0;
+  } else if (takingCover) {
+    return 4;
+  } else {
+    return 2;
+  }
 }
 
 /**
@@ -101,7 +151,15 @@ function getCoverBonus(behindObstacle, takingCover) {
  * @returns {number} the creature's remaining HP after taking damage
  */
 function getRemainingHp(maxHp, currentHp, damage) {
-  // TODO
+  const hp = currentHp - damage;
+
+  if (damage > maxHp * 2) {
+    return -1;
+  } else if (hp <= 0) {
+    return 0;
+  } else {
+    return hp;
+  }
 }
 
 /**
@@ -113,7 +171,15 @@ function getRemainingHp(maxHp, currentHp, damage) {
  * @returns {boolean} whether the creature can see
  */
 function canSee(light, vision) {
-  // TODO
+  if (light === "bright") {
+    return true;
+  } else if (light === "dim") {
+    return vision === "low-light" || vision === "dark";
+  } else if (light === "dark") {
+    return vision === "dark";
+  } else {
+    return false;
+  }
 }
 
 /**
@@ -127,5 +193,11 @@ function canSee(light, vision) {
  * @returns {number} damage dealt by the strike
  */
 function getStrikeDamage(attack, ac, damage) {
-  // TODO
+  if (doesStrikeCrit(attack, ac)) {
+    return 2 * damage;
+  } else if (doesStrikeHit(attack, ac)) {
+    return damage;
+  } else {
+    return 0;
+  }
 }
